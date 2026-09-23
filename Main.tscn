@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dxq7sblq4vajj"]
+
+[ext_resource type="Script" uid="uid://r00ud4xyfwxw" path="res://main.gd" id="1_cm0pq"]
+[ext_resource type="PackedScene" uid="uid://ckt5o28sc8pau" path="res://HexGrid.tscn" id="1_uu6xs"]
+[ext_resource type="PackedScene" uid="uid://tum573p7sefp" path="res://N7_Player.tscn" id="2_r0du0"]
+[ext_resource type="PackedScene" uid="uid://c48v6xrtwspkm" path="res://UI_HUD.tscn" id="3_r0du0"]
+
+[node name="Node2D" type="Node2D" unique_id=1263670504]
+script = ExtResource("1_cm0pq")
+
+[node name="IndustrialGrid" parent="." unique_id=63302868 instance=ExtResource("1_uu6xs")]
+
+[node name="EcoGrid" parent="." instance=ExtResource("1_uu6xs")]
+modulate = Color(0.2, 0.8, 0.3, 1)
+
+[node name="DegradGrid" parent="." instance=ExtResource("1_uu6xs")]
+modulate = Color(0.6, 0.2, 0.8, 1)
+
+[node name="ElevatorGrid" parent="." instance=ExtResource("1_uu6xs")]
+modulate = Color(1, 0.8, 0.2, 1)
+
+[node name="FogIndustrial" parent="." instance=ExtResource("1_uu6xs")]
+[node name="FogEco" parent="." instance=ExtResource("1_uu6xs")]
+[node name="FogDegrad" parent="." instance=ExtResource("1_uu6xs")]
+[node name="FogElevator" parent="." instance=ExtResource("1_uu6xs")]
+
+[node name="N7Player" parent="." unique_id=1230696305 node_paths=PackedStringArray("hex_grid") instance=ExtResource("2_r0du0")]
+position = Vector2(345, 328)
+hex_grid = NodePath("../IndustrialGrid")
+
+[node name="UiHud" parent="." unique_id=259425740 instance=ExtResource("3_r0du0")]

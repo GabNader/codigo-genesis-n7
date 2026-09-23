@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://c48v6xrtwspkm"]
+
+[ext_resource type="Script" uid="uid://btcf738utwtvd" path="res://ui_hud.gd" id="1_bjl75"]
+
+[node name="UiHud" type="CanvasLayer" unique_id=259425740]
+script = ExtResource("1_bjl75")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2011794010]
+offset_left = 31.0
+offset_top = 30.0
+offset_right = 187.0
+offset_bottom = 142.0
+
+[node name="RoundLabel" type="Label" parent="VBoxContainer" unique_id=603682020]
+layout_mode = 2
+
+[node name="BatteryBar" type="ProgressBar" parent="VBoxContainer" unique_id=434421022]
+layout_mode = 2
+
+[node name="IntegrityBar" type="ProgressBar" parent="VBoxContainer" unique_id=471651116]
+layout_mode = 2
+
+[node name="StatsLabel" type="Label" parent="VBoxContainer" unique_id=391512359]
+layout_mode = 2
+
+
+[node name="TrinityContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=153259063]
+layout_mode = 2
+alignment = 1
+
+[node name="LogicCore" type="TextureRect" parent="VBoxContainer/TrinityContainer" unique_id=1314679246]
+modulate = Color(0.1882353, 0.20392157, 1, 1)
+layout_mode = 2
+expand_mode = 1
+custom_minimum_size = Vector2(40, 40)
+
+[node name="NatureCore" type="TextureRect" parent="VBoxContainer/TrinityContainer" unique_id=2079578429]
+modulate = Color(0.21568628, 1, 0.21568628, 1)
+layout_mode = 2
+expand_mode = 1
+custom_minimum_size = Vector2(40, 40)
+
+[node name="ArtCore" type="TextureRect" parent="VBoxContainer/TrinityContainer" unique_id=10462192]
+modulate = Color(1, 0.18039216, 0.18039216, 1)
+layout_mode = 2
+expand_mode = 1
+custom_minimum_size = Vector2(40, 40)
+
+[node name="ActionButtons" type="HBoxContainer" parent="." unique_id=234567890]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -60.0
+offset_right = 200.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="LidarButton" type="Button" parent="ActionButtons" unique_id=875992229]
+layout_mode = 2
+text = "[ PULSAR LiDAR ]"
+
+[node name="ConfirmMoveButton" type="Button" parent="ActionButtons" unique_id=1531631260]
+layout_mode = 2
+text = "[ CONFIRMAR MOVIMENTO ]"
+
+[node name="EventModal" type="ColorRect" parent="." unique_id=570219215]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6509804)
+
+[node name="SystemAlertText" type="Label" parent="." unique_id=987654321]
+modulate = Color(1, 0, 0, 0)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="EventModal" unique_id=1857906545]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EventModal/Panel" unique_id=952747546]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -29.5
+offset_right = 250.0
+offset_bottom = 29.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EventText" type="Label" parent="EventModal/Panel/VBoxContainer" unique_id=1121318438]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="OptionA" type="Button" parent="EventModal/Panel/VBoxContainer" unique_id=1782045567]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="OptionB" type="Button" parent="EventModal/Panel/VBoxContainer" unique_id=232205610]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="OptionC" type="Button" parent="EventModal/Panel/VBoxContainer" unique_id=1908879499]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+autowrap_mode = 2
