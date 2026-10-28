@@ -79,6 +79,17 @@ Projeto → Plugins → Gut** e use o painel **GUT** na parte inferior.
 | `addons/gut/` | framework de testes (dependência versionada) |
 | `tests/unit/` | testes automatizados |
 | `.github/` | templates de PR e Issue, CODEOWNERS |
+| `docs/` | Plano de Gerenciamento de Configuração e evidências das atividades |
+
+## Gerência de Configuração
+
+O projeto segue o **Plano de Gerenciamento de Configuração — Enfoque DevOps (PGCS)**, que
+é item de configuração deste repositório:
+
+- [`docs/PGCS_CodigoGenesis_N7.pdf`](docs/PGCS_CodigoGenesis_N7.pdf) (versão de leitura)
+- [`docs/PGCS_CodigoGenesis_N7.docx`](docs/PGCS_CodigoGenesis_N7.docx) (fonte editável)
+
+Evidências: [recusa de push direto na `main`](docs/evidencias/aula-1-push-direto-recusado.md).
 
 ## Como contribuir
 
