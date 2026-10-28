@@ -1,0 +1,16 @@
+# Revisores automáticos por área (PGC 2 e 5.2).
+# @GabNader é o Desenvolvedor Líder do Código Genesis: O Legado de N-7.
+#
+# Mudanças em pipelines, addons (dependências versionadas) e configuração do
+# projeto são de maior risco: o Desenvolvedor Líder é sempre chamado para revisar.
+
+/.github/            @GabNader
+/addons/             @GabNader
+/project.godot       @GabNader
+/export_presets.cfg  @GabNader
+/.godot-version      @GabNader
+/tests/              @GabNader
+/assets/             @GabNader
+*.gd                 @GabNader
+*.tscn               @GabNader
+*.gdshader           @GabNader
