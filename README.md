@@ -1,8 +1,29 @@
-# Código Genesis: O Legado de N-7
+# Código Gênesis: O Legado de N-7
 
-Jogo 2D de estratégia por turnos em mapa hexagonal. Você controla o robô N-7, explora um
-mundo coberto por névoa e administra bateria, integridade e carga enquanto enfrenta
-eventos narrativos em busca dos três núcleos (Lógica, Natureza e Arte).
+Jogo sério de estratégia e sobrevivência por turnos em grid hexagonal, sobre matemática
+aplicada (álgebra, geometria analítica, probabilidade e porcentagem), sem quizzes. Você
+controla o robô N-7 dentro de um domo em colapso: escaneia a névoa de dados com o LiDAR,
+calcula rotas em que cada quilo de carga encarece o passo, e resgata os núcleos da
+Natureza e da Arte para levar a Trindade de Dados ao Elevador Central. O que você entrega
+define um de **5 finais**.
+
+O design completo está no [GDD v2](docs/GDD.md), que expande o
+[GDD v1 original](docs/GDD_Codigo_Genesis_N7_v1.pdf).
+
+## Como jogar
+
+| Ação | Controle |
+|---|---|
+| Traçar rota até um hexágono visível | clique esquerdo |
+| Estender a rota à mão | clique num vizinho do fim da rota |
+| Cortar / limpar a rota | clique num hexágono da rota / clique direito |
+| Zoom / mover câmera | roda do mouse / botão do meio arrastando |
+| Pausa | Esc |
+
+- **Custo por hexágono = 1,5 × (1 + Carga ÷ 15)** % de bateria. Até 4 hexágonos por turno.
+- **LiDAR**: −5% de bateria e escaneia o raio 3. Vazamentos, interferência e gás só aparecem com ele.
+- **Subestações** mostram a estabilidade: compare o ganho esperado do sifonamento arriscado com o seguro.
+- A partir do turno 15 o domo colapsa de fora para dentro.
 
 ## Stack
 
@@ -74,12 +95,17 @@ Projeto → Plugins → Gut** e use o painel **GUT** na parte inferior.
 
 | Caminho | Conteúdo |
 |---|---|
-| `*.gd`, `*.tscn` | cenas e scripts do jogo (`GameState` e `AudioManager` são autoloads) |
+| `scenes/` | cenas: menu, tática (`Main`), HUD, N-7, grid hexagonal e tela final |
+| `scripts/core/` | regras puras e testáveis: hex, economia, terrenos, mochila, mapa, eventos, Diretor de IA, finais |
+| `scripts/autoload/` | `GameState` (estado e turnos da partida) e `AudioManager` |
+| `scripts/game/` | scripts das cenas: jogador, camada de dados do mapa, HUD, mochila, menus |
+| `shaders/` | shader da névoa de dados |
 | `assets/` | sprites, fontes e áudio |
 | `addons/gut/` | framework de testes (dependência versionada) |
-| `tests/unit/` | testes automatizados |
+| `tests/unit/` | testes automatizados (regras, estado, cenas e partidas completas) |
+| `tests/support/` | piloto automático que joga partidas inteiras nos testes |
 | `.github/` | templates de PR e Issue, CODEOWNERS |
-| `docs/` | Plano de Gerenciamento de Configuração e evidências das atividades |
+| `docs/` | GDD, Plano de Gerenciamento de Configuração, ADRs e evidências |
 
 ## Gerência de Configuração
 

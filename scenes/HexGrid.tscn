@@ -9,6 +9,7 @@ texture_region_size = Vector2i(692, 628)
 
 [sub_resource type="TileSet" id="TileSet_mfrit"]
 tile_shape = 3
+tile_layout = 3
 tile_offset_axis = 1
 tile_size = Vector2i(692, 628)
 sources/0 = SubResource("TileSetAtlasSource_cmpoc")

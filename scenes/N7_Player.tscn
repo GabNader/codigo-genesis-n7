@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://tum573p7sefp"]
 
-[ext_resource type="Script" uid="uid://c1guhilrfoehl" path="res://N7_Player.gd" id="1_iqb4a"]
+[ext_resource type="Script" uid="uid://c1guhilrfoehl" path="res://scripts/game/n7_player.gd" id="1_iqb4a"]
 [ext_resource type="Texture2D" uid="uid://bcpi0xgt2y8tf" path="res://assets/sprites/N7-idle.png" id="2_8fmeg"]
 [ext_resource type="Texture2D" uid="uid://bc36uxddkhnsg" path="res://assets/sprites/cropped-image-u9k7-2.png" id="3_8fmeg"]
-[ext_resource type="AudioStream" uid="uid://bqnbr71hfw5nn" path="res://assets/audio/move.mp3" id="4_p56oc"]
+[ext_resource type="AudioStream" uid="uid://c2848eomo0k47" path="res://assets/audio/move.mp3" id="4_p56oc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p56oc"]
 atlas = ExtResource("2_8fmeg")

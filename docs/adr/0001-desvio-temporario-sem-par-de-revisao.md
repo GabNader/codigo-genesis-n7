@@ -35,3 +35,12 @@ que publica o próprio PGCS como item de configuração, exigido pela atividade.
 
 - O PR #1 entra sem revisão humana. O risco é baixo: a mudança é só documentação.
 - O desvio fica registrado aqui, e não escondido numa configuração.
+
+## Histórico de aplicações
+
+| Data | PR | Mudança | Risco | Mitigação |
+|---|---|---|---|---|
+| 27/10/2026 | #1 | Publicação do PGCS e da evidência da Aula 1 | baixo (só documentação) | — |
+| 23/11/2026 | #3 | Jogo completo conforme o GDD e GDD v2 (issue #2) | **alto**: reestrutura cenas e a mecânica central, o que pela seção 8.2 do PGCS aciona o CCM | 44 testes GUT, incluindo partidas completas por piloto automático (100 sementes sem travamento). Revisão humana pendente: assim que houver par, ele revisa o código já integrado e os ajustes entram por novo PR |
+
+Cada nova aplicação deste desvio deve ser acrescentada a esta tabela no próprio PR.
