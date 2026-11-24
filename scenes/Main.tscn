@@ -29,6 +29,6 @@ modulate = Color(1, 0.8, 0.2, 1)
 script = ExtResource("4_overlay")
 
 [node name="N7Player" parent="." unique_id=1230696305 instance=ExtResource("2_r0du0")]
-z_index = 15
+z_index = 30
 
 [node name="UiHud" parent="." unique_id=259425740 instance=ExtResource("3_r0du0")]

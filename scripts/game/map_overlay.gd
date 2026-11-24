@@ -17,12 +17,29 @@ var grid: TileMapLayer
 var route: Array = []
 var route_summary: Dictionary = {}
 var hover_cell: Vector2i = NO_CELL
+var highlight_cell: Vector2i = NO_CELL   ## hexágono indicado pelo tutorial
+var beacon := false                      ## linha dourada até o Elevador (Trindade completa)
 var font: Font
+var _time := 0.0
 
 
 func _ready() -> void:
 	font = load("res://assets/PixelOperator.ttf")
-	z_index = 10
+	# Acima da névoa (z 20): só desenha o que já foi revelado, e a linha dourada cruza a névoa.
+	z_index = 25
+	GameState.trinity_completed.connect(func(): beacon = true)
+	beacon = GameState.core_nature and GameState.core_art
+
+
+func _process(delta: float) -> void:
+	if highlight_cell != NO_CELL or beacon:
+		_time += delta
+		queue_redraw()
+
+
+func set_highlight(cell: Vector2i) -> void:
+	highlight_cell = cell
+	queue_redraw()
 
 
 func cell_center(cell: Vector2i) -> Vector2:
@@ -70,6 +87,13 @@ func _draw() -> void:
 	for cell in GameState.electrified:
 		_draw_zigzag(cell_center(cell))
 	_draw_route()
+	if beacon:
+		_draw_beacon()
+	if highlight_cell != NO_CELL:
+		var pulse := 0.5 + 0.5 * sin(_time * 6.0)
+		var hc := cell_center(highlight_cell)
+		draw_colored_polygon(hex_points(hc, 0.9), Color(1, 0.85, 0.3, 0.15 + 0.2 * pulse))
+		draw_polyline(_closed(hex_points(hc, 0.9 + 0.08 * pulse)), Color(1, 0.85, 0.3), 22.0)
 	if hover_cell != NO_CELL and GameState.in_map(hover_cell):
 		draw_polyline(_closed(hex_points(cell_center(hover_cell), 0.95)), Color(1, 1, 1, 0.85), 14.0)
 
@@ -149,6 +173,26 @@ func _draw_route() -> void:
 		draw_circle(p, 42.0, color)
 		if i < cumulative.size():
 			_text(p + Vector2(0, -70), "-%.1f" % cumulative[i], color, FONT_SIZE)
+
+
+## Trindade completa: linha dourada tracejada do N-7 até o Elevador, com brilho pulsante.
+func _draw_beacon() -> void:
+	var from := cell_center(GameState.player_cell)
+	var to := cell_center(GameState.elevator_cell)
+	var dist := from.distance_to(to)
+	if dist < 1.0:
+		return
+	var dir := (to - from) / dist
+	var dash := 160.0
+	var offset := fmod(_time * 300.0, dash * 2.0)
+	var d := -offset
+	while d < dist:
+		var a := from + dir * maxf(d, 0.0)
+		var b := from + dir * minf(d + dash, dist)
+		if d + dash > 0.0:
+			draw_line(a, b, Color(1, 0.85, 0.3, 0.9), 22.0)
+		d += dash * 2.0
+	draw_circle(to, 260.0 + 40.0 * sin(_time * 3.0), Color(1, 0.85, 0.3, 0.18))
 
 
 func _draw_bolt(c: Vector2, color: Color) -> void:

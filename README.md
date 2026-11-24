@@ -12,6 +12,9 @@ O design completo está no [GDD v2](docs/GDD.md), que expande o
 
 ## Como jogar
 
+A primeira partida começa com um **tutorial no primeiro turno**: o despertar do N-7
+ensina o LiDAR, o primeiro passo e o custo antes de confirmar. Ele pode ser religado no menu.
+
 | Ação | Controle |
 |---|---|
 | Traçar rota até um hexágono visível | clique esquerdo |

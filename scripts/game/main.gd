@@ -33,6 +33,8 @@ func _ready() -> void:
 	GameState.map_changed.connect(_on_map_changed)
 	GameState.run_finished.connect(_on_run_finished)
 	_on_map_changed()
+	AudioManager.set_ambience_active(true)
+	tree_exiting.connect(func(): AudioManager.set_ambience_active(false))
 
 
 func setup_background() -> void:

@@ -168,9 +168,11 @@ func _on_lidar_pulsed() -> void:
 	_refresh_route()
 
 
+## Mais carga, passo mais lento: o peso é sentido na tela e no som (GDD §15).
 func _slide_to(cell: Vector2i) -> void:
 	var tween := create_tween()
-	tween.tween_property(self, "global_position", _cell_to_world(cell), STEP_TIME).set_trans(Tween.TRANS_LINEAR)
+	var step_time := STEP_TIME * (1.0 + GameState.load_kg() / 60.0)
+	tween.tween_property(self, "global_position", _cell_to_world(cell), step_time).set_trans(Tween.TRANS_LINEAR)
 	await tween.finished
 
 

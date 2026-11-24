@@ -10,7 +10,7 @@ N-7 carrega a Lógica. Resgate o Núcleo da [color=#5f5]Natureza[/color] (setor 
 • CONFIRMAR MOVIMENTO executa a rota inteira e encerra o turno.
 
 [b]ENERGIA[/b]
-Custo por hexágono = 1,5 × (1 + Carga ÷ 15). Cada núcleo pesa 15 kg.
+Custo por hexágono = 1.5 × (1 + Carga ÷ 15). Até 4 hexágonos por turno. Cada núcleo pesa 15 kg.
 LiDAR: -5% e escaneia o raio 3. Sem escanear, vazamentos e bolsões de gás ficam ocultos.
 
 [b]PERIGOS[/b]
@@ -53,6 +53,12 @@ func _ready() -> void:
 	box.add_child(tagline)
 	box.add_child(UiTheme.make_button("INICIAR PROTOCOLO", _on_start_pressed))
 	box.add_child(UiTheme.make_button("COMO JOGAR", func(): _how_to.visible = not _how_to.visible))
+	var tutorial_btn := UiTheme.make_button("", func(): pass)
+	tutorial_btn.pressed.connect(func():
+		Settings.set_tutorial_enabled(not Settings.tutorial_enabled())
+		_update_tutorial_label(tutorial_btn))
+	_update_tutorial_label(tutorial_btn)
+	box.add_child(tutorial_btn)
 	box.add_child(UiTheme.make_button("SAIR", func(): get_tree().quit()))
 
 	_how_to = PanelContainer.new()
@@ -71,6 +77,10 @@ func _ready() -> void:
 	text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	how_box.add_child(text)
 	how_box.add_child(UiTheme.make_button("ENTENDIDO", func(): _how_to.visible = false))
+
+
+func _update_tutorial_label(btn: Button) -> void:
+	btn.text = "TUTORIAL NO 1º TURNO: %s" % ("LIGADO" if Settings.tutorial_enabled() else "DESLIGADO")
 
 
 func _on_start_pressed() -> void:
