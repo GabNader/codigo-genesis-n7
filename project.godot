@@ -10,15 +10,22 @@ config_version=5
 
 [application]
 
-config/name="codigo_genesis_mvp"
-run/main_scene="uid://b1ks7wpw0uvxw"
+config/name="Código Gênesis: O Legado de N-7"
+run/main_scene="res://scenes/UI_Menu.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GameState="*uid://d024r80sf5063"
-AudioManager="*uid://b5tiuykksihrm"
+GameState="*res://scripts/autoload/GameState.gd"
+AudioManager="*res://scripts/autoload/AudioManager.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [gui]
 

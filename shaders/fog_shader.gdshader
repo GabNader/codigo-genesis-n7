@@ -18,8 +18,8 @@ void fragment() {
     float noise_val = texture(noise_texture, uv).r;
     
     // Aplica o ruído ao alpha para criar a transparência da névoa
-    // Usamos um smoothstep para aumentar o contraste da névoa (deixar mais encorpada)
-    float fog_alpha = smoothstep(0.2, 0.8, noise_val);
+    // Base quase opaca: a névoa de dados esconde o terreno; o ruído só dá movimento
+    float fog_alpha = mix(0.82, 1.0, smoothstep(0.2, 0.8, noise_val));
     
     COLOR = fog_color;
     COLOR.a *= fog_alpha;
