@@ -39,6 +39,12 @@ var _inventory: InventoryPanel
 var _pause_layer: ColorRect
 var _route_summary: Dictionary = {}
 var _route_length := 0
+var _visor: PanelContainer
+var _visor_title: Label
+var _visor_text: Label
+var _visor_queue: Array = []
+var _visor_busy := false
+var _blink: Tween
 
 
 func _ready() -> void:
@@ -46,6 +52,7 @@ func _ready() -> void:
 	_build_log_panel()
 	_build_action_bar()
 	_build_hover_and_alert()
+	_build_visor()
 	_build_event_modal()
 	_build_inventory()
 	_build_pause()
@@ -58,8 +65,20 @@ func _ready() -> void:
 	GameState.item_offered.connect(_on_item_offered)
 	GameState.route_previewed.connect(_on_route_previewed)
 	GameState.run_finished.connect(_on_run_finished)
+	GameState.story_beat.connect(func(title, text): show_visor(title, text, UiTheme.CYAN, 7.0))
+	GameState.memory_recovered.connect(_on_memory_recovered)
+	GameState.trinity_completed.connect(_on_trinity_completed)
 	_on_log("Clique num hexágono visível para traçar a rota. LiDAR revela o raio 3.", "info")
 	_on_resources_updated()
+	if Settings.tutorial_enabled() and GameState.current_round == 1 and not GameState.run_over:
+		_start_tutorial.call_deferred()
+
+
+func _start_tutorial() -> void:
+	var tutorial := Tutorial.new()
+	add_child(tutorial)
+	move_child(tutorial, _pause_layer.get_index())
+	tutorial.start(_lidar_btn, _confirm_btn, get_parent().get_node("MapOverlay"))
 
 
 # --- Construção -------------------------------------------------------------------
@@ -185,6 +204,65 @@ func _build_hover_and_alert() -> void:
 	add_child(_alert_label)
 
 
+## Visor narrativo: trechos de história que não interrompem o jogo (fila, um por vez).
+func _build_visor() -> void:
+	_visor = PanelContainer.new()
+	_visor.add_theme_stylebox_override("panel", UiTheme.panel(UiTheme.CYAN, 0.92))
+	_visor.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_visor.offset_left = -300
+	_visor.offset_right = 300
+	_visor.offset_top = 130
+	_visor.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_visor.modulate.a = 0.0
+	add_child(_visor)
+	var box := VBoxContainer.new()
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_visor.add_child(box)
+	_visor_title = UiTheme.make_label("", UiTheme.CYAN, 20)
+	_visor_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(_visor_title)
+	_visor_text = UiTheme.make_label("", UiTheme.TEXT, 16)
+	_visor_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_visor_text.custom_minimum_size = Vector2(570, 0)
+	box.add_child(_visor_text)
+
+
+func show_visor(title: String, text: String, color: Color, seconds: float) -> void:
+	_visor_queue.append([title, text, color, seconds])
+	if not _visor_busy:
+		_next_visor()
+
+
+func _next_visor() -> void:
+	if _visor_queue.is_empty():
+		_visor_busy = false
+		return
+	_visor_busy = true
+	var item: Array = _visor_queue.pop_front()
+	_visor_title.text = item[0]
+	_visor_title.add_theme_color_override("font_color", item[2])
+	_visor_text.text = item[1]
+	_visor.add_theme_stylebox_override("panel", UiTheme.panel(item[2], 0.92))
+	var tween := create_tween()
+	tween.tween_property(_visor, "modulate:a", 1.0, 0.3)
+	tween.tween_interval(item[3])
+	tween.tween_property(_visor, "modulate:a", 0.0, 0.6)
+	tween.tween_callback(_next_visor)
+
+
+func _on_memory_recovered(id: String) -> void:
+	var memory: Dictionary = Lore.MEMORIES[id]
+	var color := Color(0.75, 0.45, 1.0) if id == "arte" else UiTheme.GOOD
+	show_visor(memory["title"], memory["text"], color, 9.0)
+	AudioManager.play_memory(id)
+
+
+func _on_trinity_completed() -> void:
+	show_visor(Lore.TRINITY_COMPLETE["title"], Lore.TRINITY_COMPLETE["text"], Color(1.0, 0.85, 0.3), 8.0)
+	_on_alert("PROTOCOLO TRINO COMPLETO")
+	AudioManager.play_trinity()
+
+
 func _build_event_modal() -> void:
 	_event_layer = _make_dim_layer()
 	var panel := PanelContainer.new()
@@ -254,7 +332,9 @@ func _on_resources_updated() -> void:
 	_round_label.text = "Rodada %d   |   Setor %s" % [GameState.current_round, Terrain.biome_name(GameState.biome_at(GameState.player_cell))]
 	_battery_label.text = "BATERIA  %.1f%%" % GameState.battery
 	_battery_bar.value = GameState.battery
-	_battery_label.add_theme_color_override("font_color", UiTheme.DANGER if GameState.battery < AudioManager.LOW_POWER_BATTERY else UiTheme.TEXT)
+	var low := GameState.battery < AudioManager.LOW_POWER_BATTERY
+	_battery_label.add_theme_color_override("font_color", UiTheme.DANGER if low else UiTheme.TEXT)
+	_set_battery_blink(low and not GameState.run_over)
 	_integrity_label.text = "INTEGRIDADE  %.0f%%" % GameState.integrity
 	_integrity_bar.value = GameState.integrity
 	var load_now := GameState.load_kg()
@@ -285,6 +365,20 @@ func _on_resources_updated() -> void:
 	_objective_label.text = goal
 	_lidar_btn.disabled = GameState.battery < Economy.LIDAR_COST
 	_update_route_label()
+
+
+## Aviso visual de bateria baixa: a barra pisca em vermelho abaixo de 15%.
+func _set_battery_blink(enabled: bool) -> void:
+	if enabled == (_blink != null):
+		return
+	if enabled:
+		_blink = create_tween().set_loops()
+		_blink.tween_property(_battery_bar, "modulate", Color(1.8, 0.4, 0.4), 0.4)
+		_blink.tween_property(_battery_bar, "modulate", Color.WHITE, 0.4)
+	else:
+		_blink.kill()
+		_blink = null
+		_battery_bar.modulate = Color.WHITE
 
 
 func _process(_delta: float) -> void:
@@ -341,7 +435,7 @@ func _on_event(event: Dictionary) -> void:
 	var options: Array = event["options"]
 	for i in options.size():
 		var opt: Dictionary = options[i]
-		var btn := UiTheme.make_button(opt["label"], _choose.bind(i))
+		var btn := UiTheme.make_button(EventDB.option_text(opt), _choose.bind(i))
 		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		btn.custom_minimum_size = Vector2(600, 0)
 		var req: float = opt.get("requires_battery", 0.0)

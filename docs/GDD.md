@@ -10,6 +10,7 @@ Arte, Tema Sério) continuam valendo como estão no PDF.
 |---|---|---|---|
 | 11/09/2026 | 1.0 | GDD do PAC Extensionista III (PDF) | Gabriel Nader Marini, Izadora de Souza, Larissa dos Santos, Letícia de Abreu |
 | 23/11/2026 | 2.0 | Regras completas, números finais, 5 finais definidos, eventos e Diretor de IA implementados ([issue #2](https://github.com/GabNader/codigo-genesis-n7/issues/2)) | Gabriel Nader Marini |
+| 23/11/2026 | 2.1 | Feedback da professora: primeiro turno guiado, custos gerados dos efeitos, história na exploração, áudio sintetizado, resposta à Trindade ([issue #4](https://github.com/GabNader/codigo-genesis-n7/issues/4)) | Gabriel Nader Marini |
 
 ---
 
@@ -206,7 +207,20 @@ Resultado em 100 sementes (0–99):
 Todas as 100 partidas terminam (nenhum soft-lock). Um jogador que planeja o sifonamento
 e a ordem de coleta deve vencer com mais frequência, que é o efeito pretendido pelo Pilar 3.
 
-## 13. Fora do escopo desta versão
+## 13. v2.1 — Resposta ao feedback da professora
+
+| Feedback | Como o jogo responde |
+|---|---|
+| Começar pelo primeiro turno, com o despertar como guia | **Tutorial no 1º turno**: visor de despertar (Domo em colapso, Lógica ativa, missão) → botão do LiDAR pulsando → hexágono vizinho destacado → dica com o custo da rota e a conta `1.5 × (1 + carga ÷ 15)` antes de confirmar → objetivo. Cada etapa avança com a ação real do jogador. Pode ser pulado e ligado de novo no menu |
+| "A Natureza anunciava 30 e descontou 45" | O desconto do protótipo somava a carga ao custo da extração. Na v2 a extração desconta um valor fixo, e na v2.1 **o texto de custo de todo botão é gerado a partir dos efeitos** (`EventDB.option_text`): o número lido é, por construção, o número aplicado. Testes cobrem a extração com carga na mochila e a prévia da rota contra o gasto real |
+| Contar mais da história na exploração | Trecho no visor na **primeira chegada a cada bioma**; **memórias recuperadas** ao extrair os núcleos: no Cofre, um arquivo da *Ode à Alegria* (Beethoven, 1824, domínio público) tocado no sintetizador; no Jardim, o canto de um sabiá-laranjeira. Mais textos nos eventos (o Autômato Caído "aguardando N-7", o bilhete na Cápsula) |
+| Aviso próprio de bateria baixa | Alarme de dois tons ao cruzar 15% e 5%, barra de bateria piscando e trilha abafada |
+| Esteira conforme a carga | Tom mais grave **e** passo mais lento: `duração = 0,3 s × (1 + carga ÷ 60)` |
+| Sons do cenário | Ambiência sintetizada por bioma com crossfade: **zumbido elétrico** (Industrial), **água** com gotas (Eco, estufas rompidas), **vento** químico (Degradação), drone harmônico (Nódulos) |
+| Resposta ao reunir os três núcleos | Visor "PROTOCOLO TRINO COMPLETO", arpejo Dó–Mi–Sol–Dó e uma **linha dourada animada** do N-7 até o Elevador |
+| Testar com quem nunca leu o guia | Roteiro de observação e as três perguntas em [`teste-de-usabilidade.md`](teste-de-usabilidade.md). **Depende da equipe aplicar** |
+
+## 14. Fora do escopo desta versão
 
 - Arte isométrica final e animação dedicada de acoplamento (hoje: alerta, som e mochila).
 - Atualização das seções 4.3 e 5.3 do PGCS para refletir a estrutura de pastas e os

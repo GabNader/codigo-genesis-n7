@@ -17,6 +17,10 @@ signal map_changed
 signal item_offered(item_id: String)
 signal inventory_changed
 signal run_finished(result: Dictionary)
+signal lidar_done(cells: int)
+signal story_beat(title: String, text: String)
+signal memory_recovered(id: String)
+signal trinity_completed
 
 const START_BATTERY := 100.0
 const START_INTEGRITY := 100.0
@@ -129,6 +133,7 @@ func new_run(seed_value: int = -1) -> void:
 	player_cell = spawn_cell
 
 	_reveal_around(player_cell)
+	flags["visited_biomes"] = {biome_at(player_cell): true}
 	# O Elevador é o farol do domo: sempre visível no mapa.
 	revealed[elevator_cell] = true
 	scanned[elevator_cell] = {"terrain": Terrain.ELEVADOR, "poi": false, "uncertain": false}
@@ -292,6 +297,7 @@ func pulse_lidar() -> Array[Vector2i]:
 			hazards += 1
 	_log("Pulso LiDAR (-%.0f%%): %d setores escaneados, %d anomalias detectadas." % [Economy.LIDAR_COST, scanned_now.size(), hazards], "info")
 	map_changed.emit()
+	lidar_done.emit(scanned_now.size())
 	_check_defeat()
 	_emit_all()
 	return scanned_now
@@ -327,6 +333,7 @@ func enter_cell(from: Vector2i, to: Vector2i) -> Dictionary:
 	if biome_at(to) == "degrad" and not scanned.has(to) and rng.randf() < Terrain.GAS_CHANCE:
 		_damage(Terrain.GAS_DAMAGE, "Bolsão de gás em setor não escaneado")
 	_reveal_around(to)
+	_announce_biome(biome_at(to))
 	if biome_at(to) == "nodes" and load_kg() > HARMONIC_LOAD and not flags.get("harmonic_used", false):
 		flags["harmonic_used"] = true
 		statuses["harmonic"] = HARMONIC_TURNS
@@ -406,6 +413,10 @@ func place_pending_item(origin: Vector2i, shape: Array) -> bool:
 	pending_item = {}
 	_log("%s acoplado à mochila (+%.0f kg). Novo custo por passo: %.1f%%." % [ItemDB.display_name(item_id), ItemDB.weight(item_id), current_step_cost()], "good")
 	inventory_changed.emit()
+	if core_nature and core_art and not flags.get("trinity_announced", false):
+		flags["trinity_announced"] = true
+		_log(Lore.TRINITY_COMPLETE["title"] + ": siga a linha dourada até o Elevador Central.", "good")
+		trinity_completed.emit()
 	_resolve_option(event, option, effects)
 	return true
 
@@ -481,6 +492,9 @@ func apply_effects(effects: Dictionary) -> void:
 		map_changed.emit()
 	if effects.has("flag"):
 		flags[effects["flag"]] = true
+	if effects.has("memory"):
+		_log("%s recuperado no visor." % Lore.MEMORIES[effects["memory"]]["title"], "good")
+		memory_recovered.emit(effects["memory"])
 	if effects.get("ascend", false):
 		_ascend()
 		return
@@ -694,6 +708,18 @@ func _interact_at(cell: Vector2i) -> bool:
 	active_event = event
 	choice_event_triggered.emit(event)
 	return true
+
+
+## Primeira chegada a um bioma: um trecho da história no visor (GDD §11).
+func _announce_biome(biome: String) -> void:
+	var visited: Dictionary = flags.get("visited_biomes", {})
+	if visited.has(biome) or not Lore.BIOME_ARRIVAL.has(biome):
+		return
+	visited[biome] = true
+	flags["visited_biomes"] = visited
+	var beat: Dictionary = Lore.BIOME_ARRIVAL[biome]
+	_log("Setor alcançado: %s." % beat["title"], "info")
+	story_beat.emit(beat["title"], beat["text"])
 
 
 ## Sensores passivos: a célula atual e as vizinhas saem da névoa. Estruturas físicas
