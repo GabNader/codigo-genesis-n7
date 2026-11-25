@@ -5,7 +5,7 @@ extends SceneTree
 ## Uso (um clipe por execução):
 ##   godot --path . --write-movie <saida.avi> --fixed-fps 30 \
 ##         -s res://tools/trailer/gravar_clipes.gd -- <clipe> [pasta_de_prints]
-## Clipes: despertar, lidar, rota, subestacao, natureza, arte, trindade, final
+## Clipes: despertar, lidar, rota, subestacao, natureza, arte, trindade, final, alarme
 ## O Movie Maker grava no tamanho de viewport do projeto (1280×720). Para 1920×1080,
 ## crie um override.cfg temporário na raiz (ver docs/trailer/roteiro.md).
 ## Com [pasta_de_prints], salva um PNG a cada 2 s para conferir o clipe sem abrir o vídeo.
@@ -18,6 +18,7 @@ const ZOOM := 0.2
 const DURATION := {
 	"despertar": 9.5, "lidar": 5.0, "rota": 8.0, "subestacao": 8.0,
 	"natureza": 14.0, "arte": 16.0, "trindade": 16.0, "final": 9.0,
+	"alarme": 5.0,
 }
 
 var clip := "despertar"
@@ -99,6 +100,9 @@ func _prepare() -> void:
 		gs.battery = 82.0
 		# Biomas já visitados: o visor fica livre para a memória e a Trindade.
 		gs.flags["visited_biomes"] = {"industrial": true, "eco": true, "degrad": true, "nodes": true}
+	if clip == "alarme":
+		# Um pulso do LiDAR (-5%) cruza o limite de 15% e dispara o alarme.
+		gs.battery = 16.0
 
 
 func _schedule() -> void:
@@ -132,6 +136,8 @@ func _schedule() -> void:
 			_at(5.0, func(): _hud().call("_choose", 0))
 			_at(6.4, func(): _place_in_backpack(Vector2i(3, 0)))
 			_at(11.0, func(): _click(gs.elevator_cell))
+		"alarme":
+			_at(1.0, func(): gs.lidar_pulsed.emit())
 		"final":
 			_at(1.0, func(): _click(gs.elevator_cell))
 			_at(2.2, func(): gs.move_confirmed.emit())
