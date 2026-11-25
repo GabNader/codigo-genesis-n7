@@ -20,7 +20,7 @@ const MAX_RESOURCE := 100.0
 
 
 static func weight_modifier(load_kg: float, harmonic := false) -> float:
-	var modifier := load_kg / WEIGHT_REFERENCE
+	var modifier := maxf(load_kg, 0.0) / WEIGHT_REFERENCE
 	if harmonic:
 		modifier *= 0.5
 	return modifier

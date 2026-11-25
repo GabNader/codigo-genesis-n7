@@ -120,3 +120,8 @@ func test_todo_evento_tem_opcoes_validas() -> void:
 			assert_true(opt.has("label"), id)
 			if opt["effects"].has("item"):
 				assert_true(ItemDB.has(opt["effects"]["item"]), id)
+
+
+func test_carga_negativa_vale_como_zero() -> void:
+	assert_almost_eq(Economy.step_cost(-10.0), Economy.step_cost(0.0), 0.001)
+	assert_almost_eq(Economy.weight_modifier(-5.0), 0.0, 0.001)
