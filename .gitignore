@@ -28,3 +28,6 @@ mono_crash.*.json
 .env
 .env.*
 !.env.example
+
+# Sobrescrita local de configurações (ex.: gravar o trailer em 1920x1080)
+override.cfg

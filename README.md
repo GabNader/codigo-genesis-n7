@@ -108,7 +108,8 @@ Projeto → Plugins → Gut** e use o painel **GUT** na parte inferior.
 | `tests/unit/` | testes automatizados (regras, estado, cenas e partidas completas) |
 | `tests/support/` | piloto automático que joga partidas inteiras nos testes |
 | `.github/` | templates de PR e Issue, CODEOWNERS |
-| `docs/` | GDD, Plano de Gerenciamento de Configuração, ADRs e evidências |
+| `docs/` | GDD, Plano de Gerenciamento de Configuração, ADRs, evidências e [roteiro do trailer](docs/trailer/roteiro.md) |
+| `tools/` | ferramentas da equipe (ex.: gravação dos clipes do trailer com o Movie Maker) |
 
 ## Gerência de Configuração
 
