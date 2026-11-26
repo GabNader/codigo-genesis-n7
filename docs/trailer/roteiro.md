@@ -214,7 +214,7 @@ Teste com pelo menos 3 pessoas e anote as palavras delas:
 
 **Créditos (tela final, 4 s)**
 > Código Gênesis: O Legado de N-7 — PAC Extensionista III, Engenharia de Software.
-> Gabriel Nader Marini, Izadora de Souza, Larissa dos Santos, Letícia de Abreu.
+> Gabriel Nader Marini, Izadora de Souza, Johann Michael Mignoni da Silva, Letícia de Abreu.
 > Cenas geradas com IA (Google Flow).
 
 **Antes de publicar, confirmem:**

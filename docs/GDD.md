@@ -11,6 +11,21 @@ Arte, Tema Sério) continuam valendo como estão no PDF.
 | 11/09/2026 | 1.0 | GDD do PAC Extensionista III (PDF) | Gabriel Nader Marini, Izadora de Souza, Larissa dos Santos, Letícia de Abreu |
 | 23/11/2026 | 2.0 | Regras completas, números finais, 5 finais definidos, eventos e Diretor de IA implementados ([issue #2](https://github.com/GabNader/codigo-genesis-n7/issues/2)) | Gabriel Nader Marini |
 | 23/11/2026 | 2.1 | Feedback da professora: primeiro turno guiado, custos gerados dos efeitos, história na exploração, áudio sintetizado, resposta à Trindade ([issue #4](https://github.com/GabNader/codigo-genesis-n7/issues/4)) | Gabriel Nader Marini |
+| 25/11/2026 | 2.2 | Atualização da equipe: Larissa dos Santos deixa o grupo; Johann Michael Mignoni da Silva entra no lugar dela | Gabriel Nader Marini |
+
+A tabela acima registra quem escreveu cada versão; os autores da v1.0 ficam como estão,
+porque o PDF foi escrito por eles.
+
+## Equipe atual
+
+PAC Extensionista III — Engenharia de Software, turma A.
+
+| Integrante | Papel no PGCS |
+|---|---|
+| Gabriel Nader Marini | Responsável de GCS-DevOps |
+| Izadora de Souza | Gerente de Projeto |
+| Johann Michael Mignoni da Silva | Integrante (desde 25/11/2026, no lugar de Larissa dos Santos) |
+| Letícia de Abreu | Integrante |
 
 ---
 
